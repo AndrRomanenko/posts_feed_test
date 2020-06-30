@@ -7,6 +7,7 @@ import {
 import { useInterval } from "../../hooks/useInterval";
 import { StyledTable } from "./styled";
 import moment from "moment";
+import { Modal } from "antd";
 const PostsTable = () => {
   const dispatch = useDispatch();
   const { current, perPage, pageData, total, pending } = useSelector(
@@ -56,6 +57,13 @@ const PostsTable = () => {
         dataSource={pageData}
         loading={pending}
         rowKey={(data) => data.title}
+        onRow={(record) => {
+          return {
+            onClick: () => {
+              alert(JSON.stringify(record));
+            },
+          };
+        }}
         pagination={{ total, pageSize: perPage, showSizeChanger: false }}
       />
     </div>
