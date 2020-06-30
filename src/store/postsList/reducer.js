@@ -14,7 +14,18 @@ const initialState = {
 const setTablePageData = (state, { payload }) => {
   return {
     ...state,
-    pageData: payload.hits || state.postsList,
+    pageData: payload.hits || state.pageData,
+    total: payload.hits ? state.total + payload.hits.length : state.total,
+    pending: payload.pending,
+  };
+};
+
+const addTableData = (state, { payload }) => {
+  return {
+    ...state,
+    pageData: payload.hits
+      ? state.pageData.concat(payload.hits)
+      : state.pageData,
     total: payload.hits ? state.total + payload.hits.length : state.total,
     pending: payload.pending,
   };
@@ -36,5 +47,6 @@ export default composeReducer({
   reducers: {
     setTablePageData,
     setPagination,
+    addTableData,
   },
 });

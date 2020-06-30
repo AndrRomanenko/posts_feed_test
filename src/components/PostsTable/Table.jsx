@@ -1,7 +1,10 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getPostsTablePage } from "../../store/postsList/actions";
-import { Pagination } from "antd";
+import {
+  getPostsTablePage,
+  refreshTableData,
+} from "../../store/postsList/actions";
+import { useInterval } from "../../hooks/useInterval";
 import { StyledTable } from "./styled";
 import moment from "moment";
 const PostsTable = () => {
@@ -38,6 +41,10 @@ const PostsTable = () => {
 
   console.log(current, perPage, pageData, total, pending);
 
+  useInterval(() => {
+    dispatch(refreshTableData());
+  }, 10000);
+
   useEffect(() => {
     dispatch(getPostsTablePage());
   }, []);
@@ -49,7 +56,7 @@ const PostsTable = () => {
         dataSource={pageData}
         loading={pending}
         rowKey={(data) => data.title}
-        pagination={{ current, total, pageSize: perPage }}
+        pagination={{ total, pageSize: perPage, showSizeChanger: false }}
       />
     </div>
   );
